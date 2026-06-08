@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Карта ваших отношений — тест Дарьи Маньковой</title>
+  <style>
+    body {
+      margin: 0;
+      display: grid;
+      min-height: 100vh;
+      place-items: center;
+      color: #2f3933;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #fffaf4;
+    }
+
+    .loader {
+      width: min(520px, calc(100vw - 40px));
+      padding: 28px;
+      border: 1px solid rgba(74, 93, 81, .18);
+      border-radius: 8px;
+      background: rgba(255, 250, 244, .86);
+      box-shadow: 0 22px 70px rgba(88, 104, 93, .18);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="loader">Загружаем карту ваших отношений...</div>
+  <script>
+    const chunks = [
+      "chunks/chunk_00.txt",
+      "chunks/chunk_01.txt",
+      "chunks/chunk_02.txt",
+      "chunks/chunk_03.txt",
+      "chunks/chunk_04.txt",
+      "chunks/chunk_05.txt"
+    ];
+
+    Promise.all(chunks.map(path => fetch(path).then(response => {
+      if (!response.ok) throw new Error(path);
+      return response.text();
+    }))).then(parts => {
+      document.open();
+      document.write(parts.join(""));
+      document.close();
+    }).catch(() => {
+      document.querySelector(".loader").textContent = "Не удалось загрузить тест. Откройте сайт через веб-сервер или GitHub Pages.";
+    });
+  </script>
+</body>
+</html>
