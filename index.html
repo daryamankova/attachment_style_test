@@ -41,15 +41,14 @@
     const resetButton = '<button class="button secondary" type="button" id="reset">Сбросить ответы</button>';
 
     function loadGoogleAnalytics() {
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function gtag(){ window.dataLayer.push(arguments); };
-      window.gtag('js', new Date());
-      window.gtag('config', 'G-TKQYQ1CR4G');
+      const initScript = document.createElement('script');
+      initScript.text = "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-TKQYQ1CR4G');";
+      document.head.appendChild(initScript);
 
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-TKQYQ1CR4G';
-      document.head.appendChild(script);
+      const gtagScript = document.createElement('script');
+      gtagScript.async = true;
+      gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-TKQYQ1CR4G';
+      document.head.appendChild(gtagScript);
     }
 
     Promise.all(chunks.map(path => fetch(path).then(response => {
