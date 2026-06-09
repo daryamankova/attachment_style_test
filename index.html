@@ -39,6 +39,7 @@
     ];
 
     const resetButton = '<button class="button secondary" type="button" id="reset">Сбросить ответы</button>';
+    const hiddenResetButton = '<button class="button secondary" type="button" id="reset" style="display:none" aria-hidden="true" tabindex="-1">Сбросить ответы</button>';
 
     function loadGoogleAnalytics() {
       const initScript = document.createElement('script');
@@ -55,7 +56,7 @@
       if (!response.ok) throw new Error(path);
       return response.text();
     }))).then(parts => {
-      const html = parts.join("").replace(resetButton, "");
+      const html = parts.join("").replace(resetButton, hiddenResetButton);
       document.open();
       document.write(html);
       document.close();
