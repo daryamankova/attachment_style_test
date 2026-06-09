@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Карта ваших отношений — тест Дарьи Маньковой</title>
+  <title>Карта ваших отношений - тест Дарьи Маньковой</title>
   <style>
     body {
       margin: 0;
@@ -39,27 +39,17 @@
     ];
 
     const resetButton = '<button class="button secondary" type="button" id="reset">Сбросить ответы</button>';
-    const lotusAsset = "assets/lotus-background.b64";
 
-    const pageParts = Promise.all(chunks.map(path => fetch(path).then(response => {
+    Promise.all(chunks.map(path => fetch(path).then(response => {
       if (!response.ok) throw new Error(path);
       return response.text();
-    })));
-
-    const lotusBackground = fetch(lotusAsset).then(response => {
-      if (!response.ok) throw new Error(lotusAsset);
-      return response.text();
-    });
-
-    Promise.all([pageParts, lotusBackground]).then(([parts, lotusBase64]) => {
-      const html = parts.join("")
-        .replace(resetButton, "")
-        .replace(/--lotus-bg:\s*url\("data:image\/svg\+xml,[^\n]+\);/, '--lotus-bg: url("data:image/jpeg;base64,' + lotusBase64.trim() + '");');
+    }))).then(parts => {
+      const html = parts.join("").replace(resetButton, "");
       document.open();
       document.write(html);
       document.close();
     }).catch(() => {
-      document.querySelector(".loader").textContent = "Не удалось загрузить тест. Откройте сайт через веб-сервер или GitHub Pages.";
+      document.querySelector(".loader").textContent = "Не удалось загрузить тест. Откройте сайт через GitHub Pages.";
     });
   </script>
 </body>
