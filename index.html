@@ -38,12 +38,15 @@
       "chunks/chunk_05.txt"
     ];
 
+    const resetButton = '<button class="button secondary" type="button" id="reset">Сбросить ответы</button>';
+
     Promise.all(chunks.map(path => fetch(path).then(response => {
       if (!response.ok) throw new Error(path);
       return response.text();
     }))).then(parts => {
+      const html = parts.join("").replace(resetButton, "");
       document.open();
-      document.write(parts.join(""));
+      document.write(html);
       document.close();
     }).catch(() => {
       document.querySelector(".loader").textContent = "Не удалось загрузить тест. Откройте сайт через веб-сервер или GitHub Pages.";
