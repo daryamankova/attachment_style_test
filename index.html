@@ -39,27 +39,28 @@
     ];
 
     const resetButton = '<button class="button secondary" type="button" id="reset">Сбросить ответы</button>';
-    const googleTag = `
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TKQYQ1CR4G"><\/script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-TKQYQ1CR4G');
-<\/script>
-`;
+
+    function loadGoogleAnalytics() {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function gtag(){ window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', 'G-TKQYQ1CR4G');
+
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-TKQYQ1CR4G';
+      document.head.appendChild(script);
+    }
 
     Promise.all(chunks.map(path => fetch(path).then(response => {
       if (!response.ok) throw new Error(path);
       return response.text();
     }))).then(parts => {
-      const html = parts.join("")
-        .replace(resetButton, "")
-        .replace("</head>", googleTag + "</head>");
+      const html = parts.join("").replace(resetButton, "");
       document.open();
       document.write(html);
       document.close();
+      loadGoogleAnalytics();
     }).catch(() => {
       document.querySelector(".loader").textContent = "Не удалось загрузить тест. Откройте сайт через GitHub Pages.";
     });
